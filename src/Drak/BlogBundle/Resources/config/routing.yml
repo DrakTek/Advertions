@@ -1,0 +1,3 @@
+drak_blog_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: DrakBlogBundle:Default:index }
