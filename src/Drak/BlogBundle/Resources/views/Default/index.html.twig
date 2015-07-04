@@ -1,7 +1,25 @@
 {% extends '::Base.html.twig' %}
-{%block body%}
+{% block title %}Bienvenue dans la plateforme de blogging{% endblock %}
+{% block body %}
+    {{ knp_menu_render('DrakBlogBundle:Builder:mainMenu') }}
     <h1>Bienvenue</h1>
     <p>
-        Hello {{ name }}!        
+        Hello {{ name }}!
     </p>
-{%endblock%}
+    <div class="col-md-6">
+       <p>
+           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis amet enim nulla, rem quibusdam ab. Tenetur quisquam, iste! Deserunt eum quis labore vel, qui eius aut non natus reiciendis ex?
+       </p>
+       <p>
+           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est repellat amet delectus cupiditate perspiciatis adipisci, esse pariatur. Laborum nam aut, nesciunt ea magni aperiam quia, alias hic eveniet nobis blanditiis.
+       </p>
+    </div>
+    <div class="col-md-6">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium delectus accusantium nobis porro obcaecati nostrum velit expedita aperiam, explicabo cum ipsam natus officia blanditiis harum nam facere, rerum reprehenderit, et?
+        </p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, quaerat est dignissimos minima cum quas facere tempora. Numquam iure facilis hic reiciendis eius ratione deserunt possimus, libero in vel cum?
+        </p>
+    </div>
+{% endblock %}

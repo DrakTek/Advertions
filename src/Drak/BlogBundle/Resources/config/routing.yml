@@ -1,3 +1,8 @@
 drak_blog_homepage:
     path:     /hello/{name}
     defaults: { _controller: DrakBlogBundle:Default:index }
+
+hello_the_world:
+    path:     /hello-world
+    defaults: { _controller: DrakBlogBundle:Advert:index }
+
