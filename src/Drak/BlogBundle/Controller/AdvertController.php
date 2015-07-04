@@ -3,11 +3,14 @@
     namespace Drak\BlogBundle\Controller;
 
     use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Bundle\FrameworkBundle\Controller\Controller
 
-    class AdvertController
+
+    class AdvertController extends Controller
     {
         public function indexAction()
         {
-            return new Response("Hello Drak !");
+            $content = $this->get('templating')->render('DrakBlogBundle:Advert:index.html.twig');
+            return new Response($content);
         }
     }
