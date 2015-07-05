@@ -1,8 +1,44 @@
-drak_blog_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: DrakBlogBundle:Default:index }
+# drak_blog_homepage:
+#     path:     /hello/{name}
+#      defaults: { _controller: DrakBlogBundle:Default:index }
 
-hello_the_world:
-    path:     /hello-world
-    defaults: { _controller: DrakBlogBundle:Advert:index }
+# route pour la page principale
+blog_home:
+    path:     /{page}
+    defaults: { _controller: DrakBlogBundle:Advert:index, page: 1 }
+    requirements:
+        page: \d*
 
+# afficher une annonce
+blog_view:
+    path:     /advert/{id}
+    defaults: { _controller: DrakBlogBundle:Advert:view }
+    requirements:
+        id:   \d+
+
+# afficheage annonce avec extension de .html ou .xml
+blog_view_slug:
+    path:     /{year}/{slug}.{format}
+    defaults: { _controller: DrakBlogBundle:Advert:viewSlug, format:html }
+    requirements:
+        year:  \d{4}
+        format: html|xml
+
+# ajout d'annonce
+blog_add:
+    path:     /add
+    defaults: { _controller: DrakBlogBundle:Advert:add }
+
+# modification d'une annonce
+blog_edit:
+    path:     /edit/{id}
+    defaults: { _controller: DrakBlogBundle:Advert:edit }
+    requirements:
+        id:   \d+
+
+# suppression d'une annonce
+blod_delete:
+    path:     /delete/{id}
+    defaults: { _controller: DrakBlogBundle:Advert:delete }
+    requirements:
+        id: \d+

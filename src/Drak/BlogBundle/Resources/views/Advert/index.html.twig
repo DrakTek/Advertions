@@ -1,0 +1,20 @@
+{% extends "DrakBlogBundle::layout.html.twig" %}
+
+{% block title %} Accueil - {{ parent() }} {% endblock %}
+
+{% block blog_body %}
+    <h2>Listes des annonces</h2>
+    <ul>
+        {% for advert in listAdverts %}
+            <li>
+                <a href="{{ path('blog_view', {'id': advert.id}) }}">
+                    {{ advert.title }}
+                </a>
+                par {{ advert.author }},
+                le {{ advert.date|date('d/m/Y') }}
+            </li>
+        {% else %}
+            <li>Pas (encore !) d'annonces</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

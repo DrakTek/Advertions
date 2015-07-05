@@ -1,0 +1,34 @@
+{% extends "DrakBlogBundle::layout.html.twig" %}
+
+{% block title %}
+    Modifier une annonce - {{ parent() }}
+{% endblock %}
+
+{% block blog_body %}
+    <h2>
+        Modifier une annonce
+    </h2>
+    {{ include("DrakBlogBundle:Advert:form.html.twig") }}
+    <p>
+        Vous editez une annonce deja existante, merci de ne pas changer
+        l'esprit generale de l'annonce deja publiée.
+    </p>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+        aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.
+    </p>
+
+    <p>
+        <a href="{{ path('blog_view', {'id': advert.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour a l'annonce
+        </a>
+    </p>
+{% endblock %}
