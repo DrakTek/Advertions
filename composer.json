@@ -24,7 +24,9 @@
         "components/jquery": "1.11.1",
         "knplabs/knp-menu": "~2.0",
         "liip/imagine-bundle": "^1.3",
-        "knplabs/knp-menu-bundle": "~2"
+        "knplabs/knp-menu-bundle": "~2",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "doctrine/doctrine-fixtures-bundle": "~2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
