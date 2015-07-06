@@ -131,7 +131,6 @@
                 array('id' => 2,'title' => 'Recherche developpeur symfony2'),
                 array('id' => 5,'title' => 'Mission Webmaster'),
                 array('id' => 9,'title' => 'Offre stage WebDesigner'),
-                array('id' => 91,'title' => 'Offre CDI WebDesigner'),
             );
 
             return $this->render('DrakBlogBundle:Advert:menu.html.twig',

@@ -4,7 +4,7 @@
     {{ parent() }} - visualisation
 {% endblock %}
 
-{% block blog_body %}
+{% block section %}
 <p>
     {% for message in app.session.flashbag.get('info') %}
         <p>

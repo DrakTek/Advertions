@@ -1,4 +1,7 @@
-
 drak_core_homepage:
     path:     /
     defaults: { _controller: DrakCoreBundle:Homew:welcome }
+
+drak_core_contact:
+    path:     /contact
+    defaults: { _controller: DrakCoreBundle:Homew:contact }

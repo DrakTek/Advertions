@@ -1,1 +1,41 @@
-Bienvenue tout le monde
+{% extends "DrakCoreBundle::layout.html.twig" %}
+
+{% block title %}
+    Accueil
+{% endblock %}
+{% block body %}
+    <p>
+      {# On affiche tous les messages flash dont le nom est « info » #}
+      {% for message in app.session.flashbag.get('info') %}
+        <p class="alert alert-danger">Information : {{ message }}</p>
+      {% endfor %}
+    </p>
+    <h1>Accueil du Portail d'application</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, hic, porro. Dolorum eaque dicta tenetur, doloribus non similique eveniet incidunt magni dignissimos quo impedit, debitis optio ratione cum, laborum minima.
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit sapiente assumenda itaque nemo iste repellendus odit. Voluptate, aliquam placeat repellendus nam facere ab eligendi, minima officiis sequi magnam sed laudantium.
+    </p>
+    <div class="col-md-4">
+        <h2>Top annonces</h2>
+        {% block menu %}
+            {{ render(controller("DrakBlogBundle:Advert:menu", {'limit':2} )) }}
+        {% endblock %}
+        <a href="{{ path('drak_core_contact') }}">Nous contacter</a>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Top News</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident voluptas mollitia officiis aperiam doloribus delectus cumque eveniet exercitationem, voluptatem tempore tenetur maxime accusantium, quaerat quibusdam, voluptatibus placeat ipsa consequuntur inventore.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Top Forums</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint rem, consequatur reprehenderit eaque, accusamus magni repellat pariatur possimus necessitatibus velit architecto asperiores earum sit tempora a vero, iusto voluptas, quisquam!
+        </p>
+    </div>
+
+{% endblock %}

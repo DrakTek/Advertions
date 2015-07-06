@@ -7,7 +7,21 @@
 {% block body %}
     <h1>Annonces</h1>
     <hr>
-    {% block blog_body %}
-    {% endblock %}
+    <div id="menu" class="col-md-3">
+        {% block nav %}
+            <h3>Les annonces</h3>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="{{ path('blog_home') }}">Accueil</a></li>
+                <li><a href="{{ path('blog_add') }}">Ajouter une annonce</a></li>
+            </ul>
 
+            <h4>Dernieres annonces</h4>
+            {% block menu %}
+                {{ render(controller("DrakBlogBundle:Advert:menu", {'limit':3} )) }}
+            {% endblock %}
+        {% endblock %}
+    </div>
+    <div id="content" class="col-md-9">
+        {% block section %}{% endblock %}
+    </div>
 {% endblock %}
