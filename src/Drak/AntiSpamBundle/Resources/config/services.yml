@@ -2,3 +2,6 @@ services:
 #    drak_anti_spam.example:
 #        class: Drak\AntiSpamBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    drak_anti_spam.antispam:
+        class: Drak\AntiSpamBundle\Controller\AntiSpam
+        arguments: [@mailer, %locale%, 50]
