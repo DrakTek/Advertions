@@ -1,0 +1,3 @@
+drak_anti_spam_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: DrakAntiSpamBundle:Default:index }

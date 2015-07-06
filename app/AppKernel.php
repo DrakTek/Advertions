@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             // new AppBundle\AppBundle(),
             new Drak\BlogBundle\DrakBlogBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Drak\AntiSpamBundle\DrakAntiSpamBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

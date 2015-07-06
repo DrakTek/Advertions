@@ -1,3 +1,7 @@
+drak_anti_spam:
+    resource: "@DrakAntiSpamBundle/Resources/config/routing.yml"
+    prefix:   /
+
 drak_blog:
     resource: "@DrakBlogBundle/Resources/config/routing.yml"
     prefix:   /blog
