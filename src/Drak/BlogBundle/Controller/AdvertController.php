@@ -5,6 +5,7 @@
     use Drak\BlogBundle\Entity\Advert;
     use Drak\BlogBundle\Entity\Application;
     use Drak\BlogBundle\Entity\Image;
+    use Drak\BlogBundle\Entity\Categorie;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;

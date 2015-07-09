@@ -12,12 +12,18 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Application
 {
+
+    public function __construct()
+    {
+        $this->apdate = new \Datetime();
+    }
+
     /**
      * @ORM\ManyToOne(targetEntity="Drak\BlogBundle\Entity\Advert")
      * @ORM\JoinColumn(nullable=false)
      */
     private $advert;
-    
+
     /**
      * @var integer
      *
@@ -126,5 +132,28 @@ class Application
     public function getApdate()
     {
         return $this->apdate;
+    }
+
+    /**
+     * Set advert
+     *
+     * @param \Drak\BlogBundle\Entity\Advert $advert
+     * @return Application
+     */
+    public function setAdvert(\Drak\BlogBundle\Entity\Advert $advert)
+    {
+        $this->advert = $advert;
+
+        return $this;
+    }
+
+    /**
+     * Get advert
+     *
+     * @return \Drak\BlogBundle\Entity\Advert
+     */
+    public function getAdvert()
+    {
+        return $this->advert;
     }
 }

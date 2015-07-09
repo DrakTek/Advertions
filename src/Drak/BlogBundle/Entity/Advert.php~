@@ -18,6 +18,11 @@ class Advert
     }
 
     /**
+     * @ORM\ManyTOMany(targetEntity="Drak\BlogBundle\Entity\Category", cascade={"persist"})
+     */
+     private $categories;
+     
+    /**
      * @ORM\OneToOne(targetEntity="Drak\BlogBundle\Entity\Image", cascade={"persist"})
      */
      private $image;
@@ -178,7 +183,7 @@ class Advert
     /**
      * Get image
      *
-     * @return \Drak\BlogBundle\Entity\Image 
+     * @return \Drak\BlogBundle\Entity\Image
      */
     public function getImage()
     {

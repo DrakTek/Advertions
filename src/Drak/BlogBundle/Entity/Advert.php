@@ -3,6 +3,7 @@
 namespace Drak\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Advert
@@ -15,7 +16,13 @@ class Advert
     public function __construct()
     {
         $this->mdate = new \Datetime();
+        $this->categories = new ArrayCollection();
     }
+
+    /**
+     * @ORM\ManyTOMany(targetEntity="Drak\BlogBundle\Entity\Category", cascade={"persist"})
+     */
+     private $categories;
 
     /**
      * @ORM\OneToOne(targetEntity="Drak\BlogBundle\Entity\Image", cascade={"persist"})
@@ -178,10 +185,43 @@ class Advert
     /**
      * Get image
      *
-     * @return \Drak\BlogBundle\Entity\Image 
+     * @return \Drak\BlogBundle\Entity\Image
      */
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Drak\BlogBundle\Entity\Category $categories
+     * @return Advert
+     */
+    public function addCategory(\Drak\BlogBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Drak\BlogBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Drak\BlogBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
