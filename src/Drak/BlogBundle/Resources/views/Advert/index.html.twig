@@ -9,10 +9,11 @@
         {% for advert in listAdverts %}
             <li>
                 <a href="{{ path('blog_view', {'id': advert.id}) }}">
-                    {{ advert.title }}
+                    {{ advert.id }} - {{ advert.title }}
                 </a>
+
                 par {{ advert.author }},
-                le {{ advert.date|date('d/m/Y') }}
+                le {{ advert.mdate|date('d/m/Y') }}
             </li>
         {% else %}
             <li>Pas (encore !) d'annonces</li>
