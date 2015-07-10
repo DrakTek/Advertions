@@ -5,12 +5,12 @@ namespace Drak\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Category
+ * Skill
  *
- * @ORM\Table("drk_category")
- * @ORM\Entity(repositoryClass="Drak\BlogBundle\Entity\CategoryRepository")
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Drak\BlogBundle\Entity\SkillRepository")
  */
-class Category
+class Skill
 {
     /**
      * @var integer
@@ -32,7 +32,7 @@ class Category
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -43,7 +43,7 @@ class Category
      * Set name
      *
      * @param string $name
-     * @return Category
+     * @return Skill
      */
     public function setName($name)
     {
@@ -55,7 +55,7 @@ class Category
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {

@@ -4,6 +4,7 @@
 
     use Drak\BlogBundle\Entity\Advert;
     use Drak\BlogBundle\Entity\Application;
+    use Drak\BlogBundle\Entity\AdvertSkill;
     use Drak\BlogBundle\Entity\Image;
     use Drak\BlogBundle\Entity\Categorie;
     use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@
                 throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
             }
             // Notre liste d'annonce en dur
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
 
             $listAdverts = $em->getRepository('DrakBlogBundle:Advert')->findAll();
             // $listAdverts = array(
@@ -64,9 +65,14 @@
                 ->findBy(array('advert' => $advert))
             ;
 
+            $listAdvertSkills = $em->getRepository('DrakBlogBundle:AdvertSkill')
+                ->findBy(array('advert' => $advert))
+            ;
+
             return $this->render('DrakBlogBundle:Advert:view.html.twig', array(
                 'advert'            =>  $advert,
                 'listApplications'  =>  $listApplications,
+                'listAdvertSkills'  =>  $listAdvertSkills,
             ));
         }
 
@@ -114,6 +120,17 @@
 
             $em = $this->getDoctrine()->getManager();
 
+            $listSkills = $em->getRepository('DrakBlogBundle:Skill')->findAll();
+            foreach($listSkills as $skill){
+                $advertSkill = New AdvertSkill();
+
+                $advertSkill->setAdvert($advert);
+                $advertSkill->setSkill($skill);
+
+                $advertSkill->setLevel('Expert');
+                $em->persist($advertSkill);
+            }
+
             $em->persist($advert);
 
             $em->persist($application1);
@@ -140,6 +157,19 @@
 
         public function editAction($id, Request $request)
         {
+            $em = $this->getDoctrine()->getManager();
+
+            $advert = $em->getRepository('DrakBlogBundle:Advert')->find($id);
+            if (null === $advert){
+                throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+            }
+            $listCategories = $em->getRepository('DrakBlogBundle:Category')->findAll();
+            foreach ($listCategories as $category){
+                $advert->addCategory($category);
+            }
+
+            $em->flush();
+
             if($request->isMethod('POST')){
                 $request->getSession()->getFlashBag()->add(
                     'notice','Annonce bien modifiee'
@@ -169,7 +199,16 @@
 
         public function deleteAction($id, Request $request)
         {
-            $request->getSession()->getFlashBag()->add('info','Annonce supprimee');
+            $em = $this->getDoctrine()->getManager();
+
+            $advert = $em->getRepository('DrakBlogBundle:Advert')->find($id);
+
+            if (null === $advert){
+                // throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas ")
+                $request->getSession()->getFlashBag()->add('info',"L'annonce avec l'id : ".$id." n'existe pas Annonce");
+                return $this->redirect($this->generateUrl('blog_home'));
+            }
+
 
             return $this->render('DrakBlogBundle:Advert:delete.html.twig');
         }

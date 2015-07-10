@@ -20,6 +20,11 @@ class Advert
     }
 
     /**
+     * @ORM\OneToMany(targetEntity="Drak\BlogBundle\Entity\Application", mappedBy="advert")
+     */
+     private $applications;
+
+    /**
      * @ORM\ManyTOMany(targetEntity="Drak\BlogBundle\Entity\Category", cascade={"persist"})
      */
      private $categories;
@@ -223,5 +228,43 @@ class Advert
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Add applications
+     *
+     * @param \Drak\BlogBundle\Entity\Application $applications
+     * @return Advert
+     */
+    public function addApplication(\Drak\BlogBundle\Entity\Application $applications)
+    {
+        $this->applications[] = $applications;
+        // on lie l'annonce a la candidature
+        $application->setAdvert($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove applications
+     *
+     * @param \Drak\BlogBundle\Entity\Application $applications
+     */
+    public function removeApplication(\Drak\BlogBundle\Entity\Application $applications)
+    {
+        $this->applications->removeElement($applications);
+        // et si notre relation etait facultative (nullable=true,
+        // ce qui n'est pas notre cas ici sinon attention)
+        // $application->setAdvert(null)
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApplications()
+    {
+        return $this->applications;
     }
 }

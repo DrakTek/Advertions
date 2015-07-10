@@ -27,6 +27,34 @@
         {% else %}
             <h5>Pas d'applications pour cet annonce</h5>
         {% endif %}
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Catégorie(s) cible(s)</h5>
+                {% if not advert.categories.empty %}
+                        {% for category in advert.categories %}
+                            <p><span class="label label-primary">{{ category.name }}</span></p>
+                            <!-- {% if not loop.last %},{% endif %} -->
+                        {% endfor %}
+                {% else %}
+                    Toutes categories
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <h5>Competence(s) requise(s)</h5>
+                {% if listAdvertSkills|length > 0 %}
+                        <ul>
+                            {% for advertSkill in listAdvertSkills %}
+                                <li>{{ advertSkill.skill.name }} : niveau {{ advertSkill.level }}</li>
+                            {% endfor %}
+                        </ul>
+                {% else %}
+                    Aucune
+                {% endif %}
+            </div>
+        </div>
+
+
+
     </div>
     <p>
         <a href="{{ path('blog_home') }}" class="btn btn-default">

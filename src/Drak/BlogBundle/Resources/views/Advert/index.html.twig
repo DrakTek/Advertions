@@ -4,6 +4,13 @@
     {{ parent() }} - Accueil
 {% endblock %}
 {% block section %}
+<p>
+    {% for message in app.session.flashbag.get('info') %}
+        <p class="alert alert-danger">
+            Information : {{ message }}
+        </p>
+    {% endfor %}
+</p>
     <h2>Listes des annonces</h2>
     <ul>
         {% for advert in listAdverts %}

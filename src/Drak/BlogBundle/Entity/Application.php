@@ -19,7 +19,7 @@ class Application
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Drak\BlogBundle\Entity\Advert")
+     * @ORM\ManyToOne(targetEntity="Drak\BlogBundle\Entity\Advert", inversedBy="applications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $advert;

@@ -1,7 +1,7 @@
 <?php
     namespace Drak\BlogBundle\DataFIxtures\ORM;
 
-    use Doctrine\Common\DataFixtures\FixturesInterface;
+    use Doctrine\Common\DataFixtures\FixtureInterface;
     use Doctrine\Common\Persistence\ObjectManager;
     use Drak\BlogBundle\Entity\Category;
 
@@ -25,4 +25,9 @@
 
             $manager->flush();
         }
+
+        // public function getOrder()
+        // {
+        //     return 1; // the order in which fixtures will be loaded
+        // }
     }
