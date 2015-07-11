@@ -12,4 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class ApplicationRepository extends EntityRepository
 {
+
+    // recuperer les X dernieres candidatures avec leur annonce associe
+    public function getApplicationsWithAdvert($limit)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        // on fait une jointure avec lentite advert
+        $qb
+            ->join('a.advert', 'adv')
+            ->addSelect('adv')
+        ;
+
+        // on retourne un nombre de resultat precis
+        $qb
+            ->setMaxResults($limit);
+
+        // enfin on retourne le resultat
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
+
 }

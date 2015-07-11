@@ -227,4 +227,18 @@
                 ));
         }
 
+        public function listAction()
+        {
+            $listAdverts = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('DrakBlogBundle:Advert')
+                ->getAdvertWithApplications()
+            ;
+
+            foreach ($listAdverts as $advert){
+                $advert->getApplications();
+            }
+        }
+
     }
