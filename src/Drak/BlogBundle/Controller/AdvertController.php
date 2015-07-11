@@ -241,4 +241,14 @@
             }
         }
 
+        public function testAction()
+        {
+            $em = $this->getDoctrine()->getManager();
+            $advert = $em->getRepository('DrakBlogBundle:Advert')->find(3);
+            $advert->setTitle("Recherche d'un développeur FullStack H/F !");
+            $em->persist($advert);
+            $em->flush();
+
+            return new Response('Slug genere : '.$advert->getSlug());
+        }
     }

@@ -42,3 +42,6 @@ blod_delete:
     defaults: { _controller: DrakBlogBundle:Advert:delete }
     requirements:
         id: \d+
+blog_test:
+    path:     /test
+    defaults: { _controller: DrakBlogBundle:Advert:test }

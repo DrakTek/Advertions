@@ -4,6 +4,7 @@ namespace Drak\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Advert
@@ -19,6 +20,12 @@ class Advert
         $this->mdate = new \Datetime();
         $this->categories = new ArrayCollection();
     }
+
+    /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(length=128, unique=true)
+     */
+     private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity="Drak\BlogBundle\Entity\Application", mappedBy="advert")
@@ -337,10 +344,33 @@ class Advert
     /**
      * Get nbApplications
      *
-     * @return integer 
+     * @return integer
      */
     public function getNbApplications()
     {
         return $this->nbApplications;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Advert
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
