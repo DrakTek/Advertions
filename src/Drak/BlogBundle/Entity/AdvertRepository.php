@@ -4,6 +4,7 @@ namespace Drak\BlogBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * AdvertRepository
@@ -108,7 +109,7 @@ class AdvertRepository extends EntityRepository
         ;
     }
 
-    public function getAdverts()
+    public function getAdverts($page, $nbPerPage)
     {
         $query = $this
             ->createQueryBuilder('a')
@@ -122,8 +123,19 @@ class AdvertRepository extends EntityRepository
             ->getQuery()
         ;
 
-        return $query
-            ->getResult()
+        $query
+            // on definit l'annonce a partir de laquelle commencer la liste
+            ->setFirstResult(($page-1) * $nbPerPage)
+            // ainsi que le nombre d'annonce a afficher par page
+            ->setMaxResults($nbPerPage)
         ;
+
+        // enfin on retourne l'object paginator correspondant
+        // a la requete construite
+        return new Paginator($query, true);
+
+        // return $query
+        //     ->getResult()
+        // ;
     }
 }

@@ -28,4 +28,15 @@
             <li>Pas (encore !) d'annonces</li>
         {% endfor %}
     </ul>
+
+    <ul class="pagination">
+        <!-- on utilise la fonction range(a,b) qui cree un tableau de valeur entre a et b -->
+        {% for p in range(1, nbPages) %}
+            <li {% if p == page %} class="active" {% endif %}>
+                <a href="{{ path('blog_home', {'page': p}) }}">
+                    {{ p }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

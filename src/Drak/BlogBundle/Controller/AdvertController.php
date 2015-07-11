@@ -23,14 +23,30 @@
             // Notre liste d'annonce en dur
             $em = $this->getDoctrine()->getManager();
 
+            // fixation du nombre de page
+            $nbPerPage = 3;
+
             $listAdverts = $em
                 ->getRepository('DrakBlogBundle:Advert')
-                ->getAdverts()
+                ->getAdverts($page, $nbPerPage)
                 // ->findAll()
             ;
 
+            // on calcule le nombre total de pages grace au count($listAdverts)
+            // qui retourne le nombre total d'annonces
+            $nbPages = ceil(count($listAdverts)/$nbPerPage);
+
+            // si la page n'existe pas, on retourne une 404
+            if($page > $nbPages){
+                throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+            }
+
             return $this->render('DrakBlogBundle:Advert:index.html.twig',
-                array('listAdverts'=> $listAdverts));
+                array(
+                    'listAdverts'   =>  $listAdverts,
+                    'nbPages'       =>  $nbPages,
+                    'page'          =>  $page
+                ));
         }
 
         public function viewAction($id)
