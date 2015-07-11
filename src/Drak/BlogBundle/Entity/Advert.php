@@ -17,8 +17,9 @@ class Advert
 {
     public function __construct()
     {
-        $this->mdate = new \Datetime();
-        $this->categories = new ArrayCollection();
+        $this->mdate        = new \Datetime();
+        $this->categories   = new ArrayCollection();
+        $this->applications = new ArrayCollection();
     }
 
     /**
@@ -38,7 +39,7 @@ class Advert
      private $categories;
 
     /**
-     * @ORM\OneToOne(targetEntity="Drak\BlogBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Drak\BlogBundle\Entity\Image", cascade={"persist","remove"})
      */
      private $image;
 
@@ -79,10 +80,20 @@ class Advert
      */
     private $content;
 
+    /**
+     * @ORM\Column(name="published", type="boolean")
+     */
+     private $published = true;
+
    /**
     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
     */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(name="nb_applications", type="integer")
+     */
+     private $nbApplications = 0;
 
     /**
      * Get id
@@ -313,10 +324,6 @@ class Advert
         $this->setUpdatedAt(new \Datetime());
     }
 
-    /**
-   * @ORM\Column(name="nb_applications", type="integer")
-   */
-   private $nbApplications = 0;
 
    public function increaseApplication()
    {
@@ -367,10 +374,33 @@ class Advert
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     * @return Advert
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean 
+     */
+    public function getPublished()
+    {
+        return $this->published;
     }
 }

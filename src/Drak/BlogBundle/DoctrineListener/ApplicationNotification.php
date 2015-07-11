@@ -29,7 +29,8 @@
             );
 
             $message
-                ->addTo($entity->getAdvert()->getAuthor())
+            // ->addTo($entity->getAdvert()->getAuthor())
+                ->addTo('ddiawara@cbao.sn')
                 ->addFrom('admin@drak.corp')
             ;
 
