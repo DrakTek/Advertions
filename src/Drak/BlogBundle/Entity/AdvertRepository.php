@@ -159,23 +159,18 @@ class AdvertRepository extends EntityRepository
         ;
     }
 
-    public function getliste_purge()
+    public function getliste_purge($days)
     {
         // recoi comme paramètres la liste des applications par advert_id
         $qb  = $this->createQueryBuilder('a');
         $qb 
             ->where('a.applications IS EMPTY')
         ;
-
-        // $qb
-        //     ->andWhere($qb->expr()->notIn('a.id', $qb2->getDQL())
-        // );
-
         $qb
             ->andWhere('DATE_DIFF(:today, a.updatedAt) > :days')
 
             ->setParameter('today', new \Datetime)
-            ->setParameter('days', 60)
+            ->setParameter('days', $days)
         ;
 
         return $qb

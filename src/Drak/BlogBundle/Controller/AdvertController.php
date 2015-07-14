@@ -42,18 +42,11 @@
             }
 
 
-            // avant de commencer l'affichage des advert, je commence par les purger
-            $service_de_purge = $this->container->get('drak_blog.purge');
-            
-            $list_application_by_advert_id = $em
-                ->getRepository('DrakBlogBundle:Application')
-                ->getApplicationByAdvertId()
-            ;
-            
+           
             $days = 60;
             $list_a_purger = $em
                 ->getRepository('DrakBlogBundle:Advert')
-                ->getliste_purge();
+                ->getliste_purge($days);
             if($list_a_purger){
                 foreach($list_a_purger as $liste){
                     $em->remove($liste);
