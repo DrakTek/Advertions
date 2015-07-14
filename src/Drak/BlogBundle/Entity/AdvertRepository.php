@@ -146,7 +146,7 @@ class AdvertRepository extends EntityRepository
         $query->andWhere(
             $query->expr()->notIn('c.id', $subquery->getDQL())
         );
-    
+
         $qb
             ->where('DATE_DIFF(:today, a.updatedAt) > :days')
 
@@ -163,12 +163,11 @@ class AdvertRepository extends EntityRepository
     {
         // recoi comme paramètres la liste des applications par advert_id
         $qb  = $this->createQueryBuilder('a');
-        $qb 
+        $qb
             ->where('a.applications IS EMPTY')
         ;
         $qb
             ->andWhere('DATE_DIFF(:today, a.updatedAt) > :days')
-
             ->setParameter('today', new \Datetime)
             ->setParameter('days', $days)
         ;
