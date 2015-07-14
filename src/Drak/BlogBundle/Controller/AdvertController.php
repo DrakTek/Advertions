@@ -42,16 +42,19 @@
             }
 
 
-            $days = 60;
-            $list_a_purger = $em
-                ->getRepository('DrakBlogBundle:Advert')
-                ->getliste_purge($days);
-            if($list_a_purger){
-                foreach($list_a_purger as $liste){
-                    $em->remove($liste);
-                }
-                $em->flush();
-            }
+            // $days = 60;
+            // $list_a_purger = $em
+            //     ->getRepository('DrakBlogBundle:Advert')
+            //     ->getliste_purge($days);
+            // if($list_a_purger){
+            //     foreach($list_a_purger as $liste){
+            //         $em->remove($liste);
+            //     }
+            //     $em->flush();
+            // }
+
+            $apurger = $this->container->get('drak_blog.purge');
+            $apurger->toPurge();
 
 
             return $this->render('DrakBlogBundle:Advert:index.html.twig',

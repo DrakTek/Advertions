@@ -1,25 +1,34 @@
-<?php 
-	
+<?php
+
 	namespace Drak\BlogBundle\Controller;
 	use Doctrine\ORM\EntityRepository;
+    use Doctrine\ORM\EntityManager;
 
 	/**
-	* 
+	*
 	*/
 	class AdvertServices
 	{
-		private $days;
+        private $entityManager;
+        private $days;
 
-		public function __construct($days)
+        public function __construct($days, EntityManager $entityManager)
 		{
-		
-			$this->days = $days;
+		      $this->entityManager = $entityManager;
+			 $this->days = $days;
 		}
 
-		public function purge($applicationList)
+		public function toPurge()
 		{
-			$em = $this->getDoctrine()->getManager();
-			$all_lists = $em->getRepository('DrakBlogBundle:Advert')->getlist_a_nettoyer($days,$applicationList);
-			return $all_lists;
+			$em = $this->entityManager;
+            $list_a_purger = $em
+                ->getRepository('DrakBlogBundle:Advert')
+                ->getliste_purge($days);
+            if($list_a_purger){
+                foreach($list_a_purger as $liste){
+                    $em->remove($liste);
+                }
+                $em->flush();
+            }
 		}
 	}
