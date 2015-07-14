@@ -53,7 +53,7 @@
             $days = 60;
             $list_a_purger = $em
                 ->getRepository('DrakBlogBundle:Advert')
-                ->getlist_a_nettoyer($days,$list_application_by_advert_id);
+                ->getliste_purge();
             if($list_a_purger){
                 foreach($list_a_purger as $liste){
                     $em->remove($liste);

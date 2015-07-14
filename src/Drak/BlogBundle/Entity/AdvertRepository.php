@@ -139,20 +139,46 @@ class AdvertRepository extends EntityRepository
         // ;
     }
 
-    public function getlist_a_nettoyer($days,array $applist)
+    public function getlist_a_nettoyer($days)
     {
-        $qb = $this->createQueryBuilder('a');
+        $queryb = $this->createQueryBuilder('a');
+
+        $query->andWhere(
+            $query->expr()->notIn('c.id', $subquery->getDQL())
+        );
     
         $qb
             ->where('DATE_DIFF(:today, a.updatedAt) > :days')
-            ->andwhere(
-                $qb
-                    ->expr()
-                    ->notin('a.id', $applist)
-            )
+
             ->setParameter('today', new \Datetime)
             ->setParameter('days', $days)
         ;
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getliste_purge()
+    {
+        // recoi comme paramètres la liste des applications par advert_id
+        $qb  = $this->createQueryBuilder('a');
+        $qb2 =  $this->_em->createQueryBuilder();
+        $qb2->select('advert')
+            ->from('Drak\BlogBundle\Entity\Application', 'ap')
+        ;
+
+        $qb
+            ->where($qb->expr()->notIn('a.id', $qb2->getDQL())
+        );
+
+        $qb
+            ->andWhere('DATE_DIFF(:today, a.updatedAt) > :days')
+
+            ->setParameter('today', new \Datetime)
+            ->setParameter('days', 60)
+        ;
+
         return $qb
             ->getQuery()
             ->getResult()
