@@ -41,6 +41,19 @@
                 throw $this->createNotFoundException("La page ".$page." n'existe pas.");
             }
 
+
+            $days = 60;
+            $list_a_purger = $em
+                ->getRepository('DrakBlogBundle:Advert')
+                ->getliste_purge($days);
+            if($list_a_purger){
+                foreach($list_a_purger as $liste){
+                    $em->remove($liste);
+                }
+                $em->flush();
+            }
+
+
             return $this->render('DrakBlogBundle:Advert:index.html.twig',
                 array(
                     'listAdverts'   =>  $listAdverts,
@@ -259,4 +272,6 @@
 
             return new Response('Slug genere : '.$advert->getSlug());
         }
+
+
     }

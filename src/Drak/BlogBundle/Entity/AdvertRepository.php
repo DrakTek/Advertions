@@ -138,4 +138,43 @@ class AdvertRepository extends EntityRepository
         //     ->getResult()
         // ;
     }
+
+    public function getlist_a_nettoyer($days)
+    {
+        $queryb = $this->createQueryBuilder('a');
+
+        $query->andWhere(
+            $query->expr()->notIn('c.id', $subquery->getDQL())
+        );
+
+        $qb
+            ->where('DATE_DIFF(:today, a.updatedAt) > :days')
+
+            ->setParameter('today', new \Datetime)
+            ->setParameter('days', $days)
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getliste_purge($days)
+    {
+        // recoi comme paramètres la liste des applications par advert_id
+        $qb  = $this->createQueryBuilder('a');
+        $qb
+            ->where('a.applications IS EMPTY')
+        ;
+        $qb
+            ->andWhere('DATE_DIFF(:today, a.updatedAt) > :days')
+            ->setParameter('today', new \Datetime)
+            ->setParameter('days', $days)
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
