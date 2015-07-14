@@ -139,7 +139,7 @@ class AdvertRepository extends EntityRepository
         // ;
     }
 
-    public function getlist_a_nettoyer($days,$applist)
+    public function getlist_a_nettoyer($days,array $applist)
     {
         $qb = $this->createQueryBuilder('a');
     
