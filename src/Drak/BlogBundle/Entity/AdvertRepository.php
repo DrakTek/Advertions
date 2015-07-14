@@ -163,14 +163,13 @@ class AdvertRepository extends EntityRepository
     {
         // recoi comme paramètres la liste des applications par advert_id
         $qb  = $this->createQueryBuilder('a');
-        $qb2 =  $this->_em->createQueryBuilder();
-        $qb2->select('advert')
-            ->from('Drak\BlogBundle\Entity\Application', 'ap')
+        $qb 
+            ->where('a.applications IS EMPTY')
         ;
 
-        $qb
-            ->where($qb->expr()->notIn('a.id', $qb2->getDQL())
-        );
+        // $qb
+        //     ->andWhere($qb->expr()->notIn('a.id', $qb2->getDQL())
+        // );
 
         $qb
             ->andWhere('DATE_DIFF(:today, a.updatedAt) > :days')

@@ -33,6 +33,11 @@ class Advert
      */
      private $applications;
 
+     /**
+     * @ORM\OneToMany(targetEntity="Drak\BlogBundle\Entity\AdvertSkill", mappedBy="advert", cascade={"remove"})
+     */
+     private $advertskill;
+
     /**
      * @ORM\ManyTOMany(targetEntity="Drak\BlogBundle\Entity\Category", cascade={"persist"})
      */
@@ -402,5 +407,38 @@ class Advert
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Add advertskill
+     *
+     * @param \Drak\BlogBundle\Entity\AdvertSkill $advertskill
+     * @return Advert
+     */
+    public function addAdvertskill(\Drak\BlogBundle\Entity\AdvertSkill $advertskill)
+    {
+        $this->advertskill[] = $advertskill;
+
+        return $this;
+    }
+
+    /**
+     * Remove advertskill
+     *
+     * @param \Drak\BlogBundle\Entity\AdvertSkill $advertskill
+     */
+    public function removeAdvertskill(\Drak\BlogBundle\Entity\AdvertSkill $advertskill)
+    {
+        $this->advertskill->removeElement($advertskill);
+    }
+
+    /**
+     * Get advertskill
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAdvertskill()
+    {
+        return $this->advertskill;
     }
 }
