@@ -41,6 +41,27 @@
                 throw $this->createNotFoundException("La page ".$page." n'existe pas.");
             }
 
+
+            // avant de commencer l'affichage des advert, je commence par les purger
+            $service_de_purge = $this->container->get('drak_blog.purge');
+            
+            $list_application_by_advert_id = $em
+                ->getRepository('DrakBlogBundle:Application')
+                ->getApplicationByAdvertId()
+            ;
+            
+            $days = 60;
+            $list_a_purger = $em
+                ->getRepository('DrakBlogBundle:Advert')
+                ->getlist_a_nettoyer($days,$list_application_by_advert_id);
+            if($list_a_purger){
+                foreach($list_a_purger as $liste){
+                    $em->remove($liste);
+                }
+                $em->flush();
+            }
+            
+
             return $this->render('DrakBlogBundle:Advert:index.html.twig',
                 array(
                     'listAdverts'   =>  $listAdverts,
@@ -92,50 +113,50 @@
             // if($antispam->isSpam($text)){
             //     throw new \Exception('Votre message a ete detecte comme spam');
             // }
-            //
+            
             // $advert = new Advert();
             // $advert->setTitle('Recherche developpeur NODE JS');
             // $advert->setAuthor('Drakun');
             // $advert->setContent('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
-            //
+            
             // // creation de lentite image
             // $image = new Image();
             // $image->setUrl('http://placehold.it/64x64');
             // $image->setAlt('Job de reve bien');
-            //
+            
             // $advert->setImage($image);
-            //
-            //
+            
+            
             // // APPLICATION
             // $application1 = new Application();
             // $application1->setAuthor("Pierre");
             // $application1->setContent("J'ai toutes les qualites requises");
-            //
+            
             // $application2 = new Application();
             // $application2->setAuthor("Marine");
             // $application2->setContent("Je suis tres motive");
-            //
+            
             // $application1->setAdvert($advert);
             // $application2->setAdvert($advert);
-            //
+            
             // $em = $this->getDoctrine()->getManager();
-            //
+            
             // $listSkills = $em->getRepository('DrakBlogBundle:Skill')->findAll();
             // foreach($listSkills as $skill){
             //     $advertSkill = New AdvertSkill();
-            //
+            
             //     $advertSkill->setAdvert($advert);
             //     $advertSkill->setSkill($skill);
-            //
+            
             //     $advertSkill->setLevel('Expert');
             //     $em->persist($advertSkill);
             // }
-            //
+            
             // $em->persist($advert);
-            //
+            
             // $em->persist($application1);
             // $em->persist($application2);
-            //
+            
             // $em->flush();
 
             if($request->isMethod('POST')){
@@ -259,4 +280,6 @@
 
             return new Response('Slug genere : '.$advert->getSlug());
         }
+
+        
     }

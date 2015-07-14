@@ -138,4 +138,24 @@ class AdvertRepository extends EntityRepository
         //     ->getResult()
         // ;
     }
+
+    public function getlist_a_nettoyer($days,$applist)
+    {
+        $qb = $this->createQueryBuilder('a');
+    
+        $qb
+            ->where('DATE_DIFF(:today, a.updatedAt) > :days')
+            ->andwhere(
+                $qb
+                    ->expr()
+                    ->notin('a.id', $applist)
+            )
+            ->setParameter('today', new \Datetime)
+            ->setParameter('days', $days)
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

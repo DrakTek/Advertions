@@ -36,4 +36,14 @@ class ApplicationRepository extends EntityRepository
 
     }
 
+    public function getApplicationByAdvertId()
+    {
+        $qb = $this->createQueryBuilder('ap');
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

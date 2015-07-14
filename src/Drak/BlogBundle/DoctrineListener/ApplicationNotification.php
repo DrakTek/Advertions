@@ -33,7 +33,7 @@
                 ->addTo('ddiawara@cbao.sn')
                 ->addFrom('admin@drak.corp')
             ;
-
+            
             $this->mailer->send($message);
         }
     }
