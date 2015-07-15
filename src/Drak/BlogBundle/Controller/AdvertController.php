@@ -11,6 +11,7 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+    use Drak\BlogBundle\Form\AdvertType;
 
 
     class AdvertController extends Controller
@@ -97,54 +98,39 @@
             //     throw new \Exception('Votre message a ete detecte comme spam');
             // }
 
-            // $advert = new Advert();
-            // $advert->setTitle('Recherche developpeur NODE JS');
-            // $advert->setAuthor('Drakun');
-            // $advert->setContent('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+            // je déclare toujours ma variable flash
+            $flash = $request->getSession()->getFlashBag();
 
-            // // creation de lentite image
-            // $image = new Image();
-            // $image->setUrl('http://placehold.it/64x64');
-            // $image->setAlt('Job de reve bien');
+            $advert = new Advert();
+            $form = $this->createForm(new AdvertType(), $advert);
 
-            // $advert->setImage($image);
+            // on fait le lien requete <-> formulaire
+            $form->handleRequest($request);
 
+            // vérification des entrées 
+            if ($form->isValid()) {
+                // on enregistre notre advert dans la base de donne
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($advert);
+                $em->flush();
 
-            // // APPLICATION
-            // $application1 = new Application();
-            // $application1->setAuthor("Pierre");
-            // $application1->setContent("J'ai toutes les qualites requises");
+                $flash 
+                    ->add('notice','annonce bien enregistrée !')
+                ;
+                // on redirige vers la page de visualisation de l'annonce freshman créée
+                return $this->redirect(
+                    $this->generateUrl(
+                        'blog_view', array(
+                            'id'    =>  $advert->getId(),
+                        )
+                    )
+                );
 
-            // $application2 = new Application();
-            // $application2->setAuthor("Marine");
-            // $application2->setContent("Je suis tres motive");
-
-            // $application1->setAdvert($advert);
-            // $application2->setAdvert($advert);
-
-            // $em = $this->getDoctrine()->getManager();
-
-            // $listSkills = $em->getRepository('DrakBlogBundle:Skill')->findAll();
-            // foreach($listSkills as $skill){
-            //     $advertSkill = New AdvertSkill();
-
-            //     $advertSkill->setAdvert($advert);
-            //     $advertSkill->setSkill($skill);
-
-            //     $advertSkill->setLevel('Expert');
-            //     $em->persist($advertSkill);
-            // }
-
-            // $em->persist($advert);
-
-            // $em->persist($application1);
-            // $em->persist($application2);
-
-            // $em->flush();
+            }
 
             if($request->isMethod('POST')){
-                $session = $request->getSession();
-                $session->getFlashBag()->add('info','Annonce bien enregistree');
+                $flash
+                    ->add('info','Annonce bien enregistree');
 
                 return $this->redirect(
                     $this->generateUrl(
@@ -155,7 +141,9 @@
                 );
             }
 
-            return $this->render('DrakBlogBundle:Advert:add.html.twig');
+            return $this->render('DrakBlogBundle:Advert:add.html.twig',array(
+                'form'  =>  $form->createView()
+            ));
         }
 
         public function editAction($id, Request $request)

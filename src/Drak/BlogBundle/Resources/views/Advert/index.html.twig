@@ -22,8 +22,8 @@
                 par {{ advert.author }},
                 le {{ advert.mdate|date('d/m/Y') }}
             </li>
-            <li>src = {{ advert.image.url }} alt = {{ advert.image.alt }}</li>
-            <li><img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}"></li>
+            {% if advert.image %}<li>src = {{ advert.image.url }} alt = {{ advert.image.alt }}</li>
+            <li><img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}"></li>{% endif %}
         {% else %}
             <li>Pas (encore !) d'annonces</li>
         {% endfor %}
