@@ -48,10 +48,20 @@
     	<div class="form-group">
     		<div class="col-sm-3">
     			{# génération du label #}
-    			{{ form_label(form.published, "Publié", {'label_attr' : {'class' : 'control-label'}}) }}
+    			{{ form_label(form.published, "Publication", {'label_attr' : {'class' : 'control-label'}}) }}
     			{{ form_errors(form.published) }}</div>
     		<div class="col-sm-4">
     			{{ form_widget(form.published)}}
+    		</div>
+    	</div>
+
+    	<div class="form-group">
+    		<div class="col-sm-3">
+    			{# génération du label #}
+    			{{ form_label(form.image.url, "Pourquoi pas une image", {'label_attr' : {'class' : 'control-label'}}) }}
+    			{{ form_errors(form.image.url) }}</div>
+    		<div class="col-sm-4">
+    			{{ form_widget(form.image.url, {'attr' : {'class' : 'form-control'}})}}
     		</div>
     	</div>
 
