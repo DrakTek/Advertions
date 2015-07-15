@@ -2,8 +2,14 @@ services:
 #    drak_blog.example:
 #        class: Drak\BlogBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    em:
+        alias: doctrine.orm.entity_manager
+
     drak_blog.doctrine.notification:
         class: Drak\BlogBundle\DoctrineListener\ApplicationNotification
         arguments: [@mailer]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+    drak_blog.purge:
+        class: Drak\BlogBundle\Controller\AdvertServices
+        arguments: [@em,60]
