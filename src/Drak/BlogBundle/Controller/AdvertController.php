@@ -42,17 +42,6 @@
             }
 
 
-            // $days = 60;
-            // $list_a_purger = $em
-            //     ->getRepository('DrakBlogBundle:Advert')
-            //     ->getliste_purge($days);
-            // if($list_a_purger){
-            //     foreach($list_a_purger as $liste){
-            //         $em->remove($liste);
-            //     }
-            //     $em->flush();
-            // }
-
             $this->container->get('drak_blog.purge')->toPurge();
 
 
