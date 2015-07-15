@@ -58,3 +58,70 @@
     	{{ form_rest(form) }}
     {{form_end(form)}}
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		// récupération de la balise div en question qui contient l'attribut data-prototype
+		var $container = $('div#drak_blogbundle_advert_categories');
+
+		// on ajoute un lien pour ajouter une nouvelle catégorie
+		var $addLink = $('<a href="#" id="add_category" class="btn btn-xs btn-primary">Ajouter une catégorie</a>');
+		$container.append($addLink);
+
+		// a chaque clik sur addLink on ajoute un nouveau champ
+		$addLink.click(function(e){
+			addCategory($container);
+			e.preventDefault(); // evite qu'un # apparaisse dans l'URL
+			return false;
+		});
+
+		// on définit un compteur unique pour nommer les champs qu'on va ajouter
+		var index = $container.find(':input').length;
+
+		// on ajoute un premier champ au cas il n'existe pas , cas d'une nouvelle annonce
+		if(index == 0){
+			addCategory($container);
+		} else {
+			// pour chaque catégorie existante on ajoute un lien de suppression
+			$container.children('div').each(function(){
+				addDeleteLink($(this))
+			});
+		}
+
+		// la fonction qui ajoute un formulaire catégorie
+		function addCategory($container){
+			// dans le contenu de l'attribut data-prototype on remplace 
+			// te texte "__name__label__" qu'il contient, par le label u champ
+			// le texte "__name__" qu'il contient par le numéro du champ
+
+			var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Catégorie n°' + (index+1)).replace(/__name__/g, index));
+
+			// on ajoute  au prototype un lien pour la suppression de la catégorie
+			addDeleteLink($prototype);
+
+			// on ajoute le prototype modifié à la fin de la balise div
+			$container.append($prototype);
+
+			// on incrémente le compteur
+			index++;
+
+		}
+
+		// fonction d'ajout d'un lien de suppression
+		function addDeleteLink($prototype){
+			// création du lien
+			$deleteLink = $('<a href="#" id="delete_category" class="btn btn-danger">Supprimer</a>');
+
+			// ajout du lien
+			$prototype.append($deleteLink);
+
+			// ajout du listener sur le clic du lien
+			$deleteLink.click(function(e){
+				$prototype.remove();
+				e.preventDefault();
+				return false;
+			});
+		}
+	});
+</script>
+
