@@ -9,22 +9,21 @@
 	*/
 	class AdvertServices
 	{
-        private $em;
+        private $entityManager;
         private $days;
 
-        public function __construct($days, EntityManager $entityManager)
+        public function __construct(EntityManager $entityManager, $days)
 		{
-		      // $this->entityManager = $entityManager;
             $this->em = $entityManager;
-			 $this->days = $days;
+			$this->days = (int) $days;
 		}
 
 		public function toPurge()
 		{
-			// $em = $this->entityManager;
+			 $em = $this->em;
             $list_a_purger = $em
                 ->getRepository('DrakBlogBundle:Advert')
-                ->getliste_purge($days);
+                ->getliste_purge($this->days);
             if($list_a_purger){
                 foreach($list_a_purger as $liste){
                     $em->remove($liste);

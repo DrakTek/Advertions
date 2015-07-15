@@ -53,8 +53,7 @@
             //     $em->flush();
             // }
 
-            $apurger = $this->container->get('drak_blog.purge');
-            $apurger->toPurge();
+            $this->container->get('drak_blog.purge')->toPurge();
 
 
             return $this->render('DrakBlogBundle:Advert:index.html.twig',
