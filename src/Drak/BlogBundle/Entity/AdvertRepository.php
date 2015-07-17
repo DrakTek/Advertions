@@ -177,4 +177,14 @@ class AdvertRepository extends EntityRepository
             ->getResult()
         ;
     }
+
+    // ne retourne que les annonces published
+    public function getPublishedQueryBuilder()
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->where('a.published = :published')
+            ->setParameter('published', true)
+        ;
+    }
 }

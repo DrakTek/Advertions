@@ -11,6 +11,8 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+    use Drak\BlogBundle\Form\AdvertType;
+      use Drak\BlogBundle\Form\AdvertEditType;
 
 
     class AdvertController extends Controller
@@ -97,65 +99,42 @@
             //     throw new \Exception('Votre message a ete detecte comme spam');
             // }
 
-            // $advert = new Advert();
-            // $advert->setTitle('Recherche developpeur NODE JS');
-            // $advert->setAuthor('Drakun');
-            // $advert->setContent('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+            // je déclare toujours ma variable flash
+            $flash = $request->getSession()->getFlashBag();
 
-            // // creation de lentite image
-            // $image = new Image();
-            // $image->setUrl('http://placehold.it/64x64');
-            // $image->setAlt('Job de reve bien');
+            $advert = new Advert();
+            $form = $this->createForm(new AdvertType(), $advert);
 
-            // $advert->setImage($image);
+            // on fait le lien requete <-> formulaire
+            $form->handleRequest($request);
 
+            // vérification des entrées 
+            if ($form->isValid()) {
+                // on déplace l'image pour le stocker 
+                // $advert->getImage()->upload();
 
-            // // APPLICATION
-            // $application1 = new Application();
-            // $application1->setAuthor("Pierre");
-            // $application1->setContent("J'ai toutes les qualites requises");
+                // on enregistre notre advert dans la base de donne
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($advert);
+                $em->flush();
 
-            // $application2 = new Application();
-            // $application2->setAuthor("Marine");
-            // $application2->setContent("Je suis tres motive");
-
-            // $application1->setAdvert($advert);
-            // $application2->setAdvert($advert);
-
-            // $em = $this->getDoctrine()->getManager();
-
-            // $listSkills = $em->getRepository('DrakBlogBundle:Skill')->findAll();
-            // foreach($listSkills as $skill){
-            //     $advertSkill = New AdvertSkill();
-
-            //     $advertSkill->setAdvert($advert);
-            //     $advertSkill->setSkill($skill);
-
-            //     $advertSkill->setLevel('Expert');
-            //     $em->persist($advertSkill);
-            // }
-
-            // $em->persist($advert);
-
-            // $em->persist($application1);
-            // $em->persist($application2);
-
-            // $em->flush();
-
-            if($request->isMethod('POST')){
-                $session = $request->getSession();
-                $session->getFlashBag()->add('info','Annonce bien enregistree');
-
+                $flash 
+                    ->add('notice','annonce bien enregistrée !')
+                ;
+                // on redirige vers la page de visualisation de l'annonce freshman créée
                 return $this->redirect(
                     $this->generateUrl(
-                        'blog_view',array(
-                            'id'=>3
+                        'blog_view', array(
+                            'id'    =>  $advert->getId(),
                         )
                     )
                 );
+
             }
 
-            return $this->render('DrakBlogBundle:Advert:add.html.twig');
+            return $this->render('DrakBlogBundle:Advert:add.html.twig',array(
+                'form'  =>  $form->createView()
+            ));
         }
 
         public function editAction($id, Request $request)
@@ -167,17 +146,21 @@
             if ($advert == null){
                 throw $this->createNotFoundException("L'annonce d'id ".$id." n'existe pas.");
             }
-            // $listCategories = $em->getRepository('DrakBlogBundle:Category')->findAll();
-            // foreach ($listCategories as $category){
-            //     $advert->addCategory($category);
-            // }
-            //
-            // $em->flush();
 
-            if($request->isMethod('POST')){
-                $request->getSession()->getFlashBag()->add(
-                    'notice','Annonce bien modifiee'
-                );
+            // déclaration de la variable flash
+            $flash = $request->getSession()->getFlashBag();
+            // récupération du formulaire d'edition
+            $editform = $this->createForm(new AdvertType(), $advert);
+            // on fait le lien requete <-> formulaire
+            $editform->handleRequest($request);
+
+            if($editform->isValid()){
+
+                // Inutile de persister ici car doctrine connait déja l'entité
+                $em->flush();
+
+                $flash 
+                    ->add('notice','Annonce bien modifiee');
 
                 return $this->redirect(
                     $this->generateUrl(
@@ -189,6 +172,7 @@
             }
 
             return $this->render('DrakBlogBundle:Advert:edit.html.twig', array(
+                'form'  =>$editform->createView(),
                 'advert' => $advert
             ));
         }
@@ -203,19 +187,31 @@
                 throw new createNotFoundException("L'annonce d'id ".$id." n'existe pas ");
             }
 
-            if ($request->isMethod('POST')){
-                $request
-                    ->getSession()
-                    ->getFlashBag()
-                    ->add('info',"L'annonce avec l'id : ".$id." n'existe pas Annonce");
+            // on créé un formulaire vide vide pour une protection contre les failles de sécurité 
+            $form = $this->createFormBuilder()->getForm();
+            
+            // déclaration de la variable flash
+            $flash = $request->getSession()->getFlashBag();
 
+            
+            // on fait le lien requete <-> formulaire
+            $form->handleRequest($request);
+
+
+            if ($form->isValid()){
+                $em->remove($advert);
+                $em->flush();
+
+                $flash
+                    ->add('info',"L'annonce avec l'id : ".$id." a été bien supprimée");
                 return $this->redirect($this->generateUrl('blog_home'));
             }
 
             return $this
                 ->render('DrakBlogBundle:Advert:delete.html.twig',
                     array(
-                        'advert'    =>  $advert,
+                        'advert'    => $advert,
+                        'form'      => $form->createView()
                     )
                 );
         }

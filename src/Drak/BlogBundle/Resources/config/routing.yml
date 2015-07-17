@@ -37,7 +37,7 @@ blog_edit:
         id:   \d+
 
 # suppression d'une annonce
-blod_delete:
+blog_delete:
     path:     /delete/{id}
     defaults: { _controller: DrakBlogBundle:Advert:delete }
     requirements:
