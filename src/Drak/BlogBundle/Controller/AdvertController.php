@@ -12,7 +12,9 @@
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
     use Drak\BlogBundle\Form\AdvertType;
-      use Drak\BlogBundle\Form\AdvertEditType;
+    use Drak\BlogBundle\Form\AdvertEditType;
+    use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
     class AdvertController extends Controller
@@ -91,6 +93,7 @@
             );
         }
 
+
         public function addAction(Request $request)
         {
             // $antispam = $this->container->get('drak_anti_spam.antispam');
@@ -98,6 +101,12 @@
             // if($antispam->isSpam($text)){
             //     throw new \Exception('Votre message a ete detecte comme spam');
             // }
+
+            // On vérifie que l'utilisateur dispose bien du rôle ROLE_AUTEUR
+            if (!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+                // Sinon on déclenche une exception « Accès interdit »
+                throw new AccessDeniedException('Accès limité aux auteurs.');
+            }
 
             // je déclare toujours ma variable flash
             $flash = $request->getSession()->getFlashBag();

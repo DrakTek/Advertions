@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Skill
  *
- * @ORM\Table()
+ * @ORM\Table("drk_skill")
  * @ORM\Entity(repositoryClass="Drak\BlogBundle\Entity\SkillRepository")
  */
 class Skill
