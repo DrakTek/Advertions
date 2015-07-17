@@ -22,7 +22,8 @@ class AppKernel extends Kernel
             new Drak\AntiSpamBundle\DrakAntiSpamBundle(),
             new Drak\CoreBundle\DrakCoreBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Drak\UserBundle\DrakUserBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Drak\UserBundle\DrakUserBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
