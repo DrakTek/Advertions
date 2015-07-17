@@ -1,3 +1,7 @@
+drak_user:
+    resource: "@DrakUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 drak_core:
     resource: "@DrakCoreBundle/Resources/config/routing.yml"
     prefix:   /

@@ -1,0 +1,4 @@
+services:
+#    drak_user.example:
+#        class: Drak\UserBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
