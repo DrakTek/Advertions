@@ -12,6 +12,7 @@
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
     use Drak\BlogBundle\Form\AdvertType;
+      use Drak\BlogBundle\Form\AdvertEditType;
 
 
     class AdvertController extends Controller
@@ -109,6 +110,9 @@
 
             // vérification des entrées 
             if ($form->isValid()) {
+                // on déplace l'image pour le stocker 
+                // $advert->getImage()->upload();
+
                 // on enregistre notre advert dans la base de donne
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($advert);
@@ -128,19 +132,6 @@
 
             }
 
-            if($request->isMethod('POST')){
-                $flash
-                    ->add('info','Annonce bien enregistree');
-
-                return $this->redirect(
-                    $this->generateUrl(
-                        'blog_view',array(
-                            'id'=>3
-                        )
-                    )
-                );
-            }
-
             return $this->render('DrakBlogBundle:Advert:add.html.twig',array(
                 'form'  =>  $form->createView()
             ));
@@ -155,17 +146,21 @@
             if ($advert == null){
                 throw $this->createNotFoundException("L'annonce d'id ".$id." n'existe pas.");
             }
-            // $listCategories = $em->getRepository('DrakBlogBundle:Category')->findAll();
-            // foreach ($listCategories as $category){
-            //     $advert->addCategory($category);
-            // }
-            //
-            // $em->flush();
 
-            if($request->isMethod('POST')){
-                $request->getSession()->getFlashBag()->add(
-                    'notice','Annonce bien modifiee'
-                );
+            // déclaration de la variable flash
+            $flash = $request->getSession()->getFlashBag();
+            // récupération du formulaire d'edition
+            $editform = $this->createForm(new AdvertType(), $advert);
+            // on fait le lien requete <-> formulaire
+            $editform->handleRequest($request);
+
+            if($editform->isValid()){
+
+                // Inutile de persister ici car doctrine connait déja l'entité
+                $em->flush();
+
+                $flash 
+                    ->add('notice','Annonce bien modifiee');
 
                 return $this->redirect(
                     $this->generateUrl(
@@ -177,6 +172,7 @@
             }
 
             return $this->render('DrakBlogBundle:Advert:edit.html.twig', array(
+                'form'  =>$editform->createView(),
                 'advert' => $advert
             ));
         }
@@ -191,19 +187,31 @@
                 throw new createNotFoundException("L'annonce d'id ".$id." n'existe pas ");
             }
 
-            if ($request->isMethod('POST')){
-                $request
-                    ->getSession()
-                    ->getFlashBag()
-                    ->add('info',"L'annonce avec l'id : ".$id." n'existe pas Annonce");
+            // on créé un formulaire vide vide pour une protection contre les failles de sécurité 
+            $form = $this->createFormBuilder()->getForm();
+            
+            // déclaration de la variable flash
+            $flash = $request->getSession()->getFlashBag();
 
+            
+            // on fait le lien requete <-> formulaire
+            $form->handleRequest($request);
+
+
+            if ($form->isValid()){
+                $em->remove($advert);
+                $em->flush();
+
+                $flash
+                    ->add('info',"L'annonce avec l'id : ".$id." a été bien supprimée");
                 return $this->redirect($this->generateUrl('blog_home'));
             }
 
             return $this
                 ->render('DrakBlogBundle:Advert:delete.html.twig',
                     array(
-                        'advert'    =>  $advert,
+                        'advert'    => $advert,
+                        'form'      => $form->createView()
                     )
                 );
         }
